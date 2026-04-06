@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="/images/logo.png" />
-  <title>Matriverse · Probability Intelligence Engine</title>
+  <title>Matrix | Probability Intelligence Engine</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
@@ -421,7 +421,7 @@
 
 <div class="topbar">
   <div>
-    <div class="logo">Matriverse</div>
+    <div class="logo">Matrix</div>
     <div class="logo-sub">Probability Intelligence Engine</div>
   </div>
   <div class="topbar-right" id="event-count">
@@ -483,6 +483,7 @@ const SEED = [
 let events = JSON.parse(localStorage.getItem('matrix_events') || 'null') || [...SEED];
 let navStack = [];
 let currentBranchNode = null;
+let scenarioCache = {};
 
 function save() {
   localStorage.setItem('matrix_events', JSON.stringify(events));
@@ -626,19 +627,11 @@ function renderBranch() {
   const scenarios = generateScenarios(node);
   const r = seededRand(node.prob * 13);
 
-  const cards = scenarios.map(sc => {
-    const cls = sc.prob > 55 ? 'high' : sc.prob < 40 ? 'low' : 'mid';
-    const samples = (1000 + Math.floor(r() * 8000)).toLocaleString();
-    return `
-      <div class="branch-card ${cls}" onclick="drillInto(${JSON.stringify(sc).replace(/"/g,'&quot;')})">
-        <div class="bc-scenario-label">scenario</div>
-        <div class="bc-text">${sc.label}</div>
-        <div class="bc-prob">${sc.prob}%</div>
-        <div class="bc-samples">~${samples} MCMC samples</div>
-        <div class="sim-bar"><div class="sim-fill" style="width:${sc.prob}%"></div></div>
-      </div>`;
-  }).join('');
+  // Store in cache so drillInto can look up by ID — no serialisation into HTML
+  scenarioCache = {};
+  scenarios.forEach(sc => { scenarioCache[sc.id] = sc; });
 
+  // Show simulation running state first, then reveal cards
   panel.innerHTML = `
     <div class="branch-panel">
       <div class="branch-heading">branching from</div>
@@ -646,15 +639,61 @@ function renderBranch() {
         ${shortenLabel(node.label, 60)}
         <span class="prob-badge">${node.prob}%</span>
       </div>
-      <div class="branch-grid">${cards}</div>
+      <div id="sim-status" style="font-size:11px;font-family:var(--font-mono);color:var(--text-muted);margin-bottom:14px;min-height:16px;"></div>
+      <div id="branch-grid-inner" class="branch-grid"></div>
       <div class="branch-footer">click any scenario to explore deeper · depth: ${navStack.length}</div>
     </div>`;
+
+  // Animate simulation progress, then render cards
+  const statusEl = document.getElementById('sim-status');
+  const gridEl = document.getElementById('branch-grid-inner');
+  const steps = [
+    'initialising markov chain…',
+    'sampling state transitions…',
+    'running monte carlo simulation…',
+    'converging on probability estimates…',
+    'scenarios ready',
+  ];
+  let i = 0;
+  const interval = setInterval(() => {
+    if (statusEl) statusEl.textContent = steps[i] || steps[steps.length - 1];
+    i++;
+    if (i >= steps.length) {
+      clearInterval(interval);
+      // Render cards after simulation "completes"
+      if (!gridEl) return;
+      gridEl.innerHTML = scenarios.map(sc => {
+        const cls = sc.prob > 55 ? 'high' : sc.prob < 40 ? 'low' : 'mid';
+        const samples = (1000 + Math.floor(r() * 8000)).toLocaleString();
+        return `
+          <div class="branch-card ${cls}" onclick="drillInto('${sc.id}')" style="animation: slideIn 0.18s ease both">
+            <div class="bc-scenario-label">scenario</div>
+            <div class="bc-text">${sc.label}</div>
+            <div class="bc-prob">${sc.prob}%</div>
+            <div class="bc-samples">~${samples} MCMC samples</div>
+            <div class="sim-bar"><div class="sim-fill" style="width:0%;" data-target="${sc.prob}"></div></div>
+          </div>`;
+      }).join('');
+
+      // Animate sim bars filling up
+      setTimeout(() => {
+        document.querySelectorAll('.sim-fill[data-target]').forEach(el => {
+          el.style.transition = 'width 0.6s ease';
+          el.style.width = el.dataset.target + '%';
+        });
+        if (statusEl) statusEl.textContent = `${scenarios.length} scenarios · depth ${navStack.length}`;
+      }, 60);
+    }
+  }, 320);
 }
 
-function drillInto(sc) {
-  const node = { ...sc, id: sc.id + '_' + Date.now() };
+function drillInto(scId) {
+  const sc = scenarioCache[scId];
+  if (!sc) return;
+  const node = { ...sc, id: scId + '_' + Date.now() };
   navStack.push(node);
   currentBranchNode = node;
+  scenarioCache = {}; // clear — new scenarios will be generated
   renderBreadcrumb();
   renderBranch();
   setTimeout(() => document.getElementById('branch-panel').scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
