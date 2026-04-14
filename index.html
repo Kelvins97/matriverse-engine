@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" href="/images/logo.png" />
   <title>Matrix | Probability Intelligence Engine</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- SVG favicon inline via data URI -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='12' r='9' fill='none' stroke='%23888' stroke-width='1.5'/><circle cx='32' cy='12' r='6' fill='url(%23g1)'/><circle cx='12' cy='48' r='9' fill='none' stroke='%23888' stroke-width='1.5'/><circle cx='12' cy='48' r='6' fill='url(%23g2)'/><circle cx='52' cy='48' r='9' fill='none' stroke='%23888' stroke-width='1.5'/><circle cx='52' cy='48' r='6' fill='url(%23g3)'/><line x1='32' y1='21' x2='16' y2='40' stroke='%23555' stroke-width='1'/><line x1='32' y1='21' x2='48' y2='40' stroke='%23555' stroke-width='1'/><line x1='21' y1='48' x2='43' y2='48' stroke='%23555' stroke-width='1'/><line x1='14' y1='39' x2='30' y2='20' stroke='%23c84040' stroke-width='1.5' marker-end='url(%23arr)'/><line x1='50' y1='39' x2='34' y2='20' stroke='%23c84040' stroke-width='1.5' marker-end='url(%23arr)'/><line x1='22' y1='48' x2='43' y2='48' stroke='%23c84040' stroke-width='1.5' marker-end='url(%23arr)'/><defs><radialGradient id='g1' cx='40%' cy='35%'><stop offset='0%' stop-color='%2300cc66'/><stop offset='100%' stop-color='%23803020'/></radialGradient><radialGradient id='g2' cx='40%' cy='35%'><stop offset='0%' stop-color='%2300cc66'/><stop offset='100%' stop-color='%23803020'/></radialGradient><radialGradient id='g3' cx='40%' cy='35%'><stop offset='0%' stop-color='%2300cc66'/><stop offset='100%' stop-color='%23803020'/></radialGradient><marker id='arr' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='5' markerHeight='5' orient='auto-start-reverse'><path d='M2 1L8 5L2 9' fill='none' stroke='%23c84040' stroke-width='2'/></marker></defs></svg>" />
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -22,396 +25,161 @@
       --green-vh: #0f3d22;
       --green-vh-border: #1a6e40;
       --green-vh-text: #6effa8;
-      --green-h: #0a2e18;
+      --green-h:  #0a2e18;
       --green-h-border: #1a5234;
       --green-h-text: #4dd980;
-      --red-l: #3d0f0f;
+      --red-l:  #3d0f0f;
       --red-l-border: #6e1a1a;
       --red-l-text: #ff8080;
       --red-vl: #2e0a0a;
       --red-vl-border: #521414;
       --red-vl-text: #ff6060;
       --accent: #c8f55a;
-      --accent-dim: rgba(200, 245, 90, 0.08);
+      --accent-dim: rgba(200,245,90,0.08);
       --font-display: 'Syne', sans-serif;
       --font-mono: 'DM Mono', monospace;
     }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-display);
-      min-height: 100vh;
-      padding: 0;
-    }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-display); min-height: 100vh; }
 
-    /* ── TOP BAR ── */
+    /* ── TOPBAR ── */
     .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 32px;
-      border-bottom: 0.5px solid var(--border);
-      position: sticky;
-      top: 0;
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(12px);
-      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 32px; border-bottom: 0.5px solid var(--border);
+      position: sticky; top: 0; background: rgba(10,10,10,0.94);
+      backdrop-filter: blur(12px); z-index: 100;
     }
-    .logo {
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-    .logo-sub {
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-top: 2px;
-      font-family: var(--font-mono);
-    }
-    .topbar-right {
-      font-size: 11px;
-      font-family: var(--font-mono);
-      color: var(--text-muted);
-      letter-spacing: 0.04em;
-    }
-    .topbar-right span {
-      color: var(--accent);
-    }
+    .logo-wrap { display: flex; align-items: center; gap: 12px; }
+    .logo-svg { width: 36px; height: 36px; flex-shrink: 0; }
+    .logo { font-size: 15px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+    .logo-sub { font-size: 10px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; font-family: var(--font-mono); margin-top: 2px; }
+    .topbar-right { font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); }
+    .topbar-right span { color: var(--accent); }
 
-    /* ── MAIN LAYOUT ── */
-    .main { padding: 32px; max-width: 1200px; margin: 0 auto; }
+    /* ── MAIN ── */
+    .main { padding: 28px 32px; max-width: 1200px; margin: 0 auto; }
 
     /* ── BREADCRUMB ── */
-    #breadcrumb {
-      font-size: 11px;
-      font-family: var(--font-mono);
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-bottom: 24px;
-      min-height: 20px;
-    }
-    #breadcrumb .bc-link {
-      color: var(--accent);
-      cursor: pointer;
-      opacity: 0.7;
-      transition: opacity 0.15s;
-    }
-    #breadcrumb .bc-link:hover { opacity: 1; }
-    #breadcrumb .bc-sep { color: var(--text-dim); }
-    #breadcrumb .bc-current { color: var(--text); }
+    #breadcrumb { font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 22px; min-height: 20px; }
+    .bc-link { color: var(--accent); cursor: pointer; opacity: 0.7; transition: opacity 0.15s; }
+    .bc-link:hover { opacity: 1; }
+    .bc-sep { color: var(--text-dim); }
+    .bc-current { color: var(--text); }
 
-    /* ── ADD EVENT FORM ── */
-    .form-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 28px;
-      align-items: stretch;
+    /* ── TABS ── */
+    .tabs { display: flex; gap: 2px; margin-bottom: 20px; border-bottom: 0.5px solid var(--border); }
+    .tab { font-size: 12px; font-family: var(--font-mono); padding: 8px 16px; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -0.5px; transition: color 0.15s, border-color 0.15s; letter-spacing: 0.04em; }
+    .tab:hover { color: var(--text); }
+    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* ── FORM ── */
+    .form-row { display: flex; gap: 10px; margin-bottom: 24px; align-items: stretch; }
+    .form-row input, .form-row textarea {
+      background: var(--surface); border: 0.5px solid var(--border);
+      border-radius: 6px; color: var(--text); font-family: var(--font-display);
+      font-size: 13px; padding: 10px 14px; transition: border-color 0.15s; outline: none;
     }
-    .form-row input {
-      background: var(--surface);
-      border: 0.5px solid var(--border);
-      border-radius: 6px;
-      color: var(--text);
-      font-family: var(--font-display);
-      font-size: 13px;
-      padding: 10px 14px;
-      transition: border-color 0.15s;
-      outline: none;
-    }
-    .form-row input:focus { border-color: var(--border-hover); }
-    .form-row input::placeholder { color: var(--text-muted); }
+    .form-row input:focus, .form-row textarea:focus { border-color: var(--border-hover); }
+    .form-row input::placeholder, .form-row textarea::placeholder { color: var(--text-muted); }
     #event-input { flex: 1; }
-    #prob-input { width: 70px; text-align: center; font-family: var(--font-mono); }
+    #prob-input { width: 72px; text-align: center; font-family: var(--font-mono); }
     .add-btn {
-      background: var(--accent);
-      color: #0a0a0a;
-      border: none;
-      border-radius: 6px;
-      padding: 10px 20px;
-      font-family: var(--font-display);
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      letter-spacing: 0.04em;
-      transition: opacity 0.15s, transform 0.1s;
-      white-space: nowrap;
+      background: var(--accent); color: #0a0a0a; border: none; border-radius: 6px;
+      padding: 10px 20px; font-family: var(--font-display); font-size: 13px;
+      font-weight: 600; cursor: pointer; letter-spacing: 0.04em;
+      transition: opacity 0.15s, transform 0.1s; white-space: nowrap;
     }
     .add-btn:hover { opacity: 0.88; }
     .add-btn:active { transform: scale(0.98); }
+    .sec-btn {
+      background: none; color: var(--text-muted); border: 0.5px solid var(--border);
+      border-radius: 6px; padding: 10px 16px; font-family: var(--font-display);
+      font-size: 13px; cursor: pointer; transition: border-color 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    .sec-btn:hover { border-color: var(--border-hover); color: var(--text); }
 
-    /* ── POLYMARKET STRIP ── */
-    .pm-strip {
-      background: var(--surface);
-      border: 0.5px solid var(--border);
-      border-radius: 8px;
-      padding: 14px 18px;
-      margin-bottom: 28px;
+    /* article parser panel */
+    .article-panel { margin-bottom: 24px; }
+    .article-panel textarea {
+      width: 100%; height: 140px; resize: vertical; font-size: 12px;
+      font-family: var(--font-mono); line-height: 1.6;
     }
-    .pm-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-    .pm-label {
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-    }
-    .pm-fetch-btn {
-      font-size: 11px;
-      font-family: var(--font-mono);
-      background: none;
-      border: 0.5px solid var(--border-hover);
-      border-radius: 4px;
-      color: var(--accent);
-      cursor: pointer;
-      padding: 4px 10px;
-      transition: background 0.15s;
-    }
+    .article-actions { display: flex; gap: 10px; margin-top: 10px; align-items: center; }
+    .parse-hint { font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); }
+
+    /* ── POLYMARKET ── */
+    .pm-strip { background: var(--surface); border: 0.5px solid var(--border); border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; }
+    .pm-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .pm-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); font-family: var(--font-mono); }
+    .pm-fetch-btn { font-size: 11px; font-family: var(--font-mono); background: none; border: 0.5px solid var(--border-hover); border-radius: 4px; color: var(--accent); cursor: pointer; padding: 4px 10px; transition: background 0.15s; }
     .pm-fetch-btn:hover { background: var(--accent-dim); }
     .pm-chips { display: flex; gap: 8px; flex-wrap: wrap; }
-    .pm-chip {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 11px;
-      font-family: var(--font-mono);
-      border: 0.5px solid var(--border);
-      border-radius: 20px;
-      padding: 5px 12px;
-      cursor: pointer;
-      background: var(--surface2);
-      color: var(--text);
-      transition: border-color 0.15s, background 0.15s;
-    }
-    .pm-chip:hover { border-color: var(--border-hover); background: var(--surface); }
+    .pm-chip { display: flex; align-items: center; gap: 7px; font-size: 11px; font-family: var(--font-mono); border: 0.5px solid var(--border); border-radius: 20px; padding: 5px 12px; cursor: pointer; background: var(--surface2); color: var(--text); transition: border-color 0.15s; }
+    .pm-chip:hover { border-color: var(--border-hover); }
     .pm-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
     .pm-hint { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); }
 
     /* ── LEGEND ── */
-    .legend {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-      font-size: 10px;
-      font-family: var(--font-mono);
-      color: var(--text-muted);
-      letter-spacing: 0.04em;
-    }
+    .legend { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); letter-spacing: 0.04em; }
     .legend-item { display: flex; align-items: center; gap: 6px; }
     .legend-dot { width: 9px; height: 9px; border-radius: 2px; }
 
     /* ── HEATMAP ── */
-    .heatmap {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-      gap: 10px;
-      margin-bottom: 32px;
-    }
-    .tile {
-      border-radius: 8px;
-      padding: 16px;
-      cursor: pointer;
-      transition: transform 0.12s, border-color 0.12s;
-      border: 0.5px solid transparent;
-      min-height: 100px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
-    }
+    .heatmap { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin-bottom: 28px; }
+    .tile { border-radius: 8px; padding: 16px; cursor: pointer; transition: transform 0.12s, border-color 0.12s; border: 0.5px solid transparent; min-height: 100px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
     .tile:hover { transform: translateY(-2px); }
-    .tile .tile-tag {
-      font-size: 9px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      font-family: var(--font-mono);
-      opacity: 0.55;
-      margin-bottom: 6px;
-    }
-    .tile .tile-label {
-      font-size: 12px;
-      font-weight: 500;
-      line-height: 1.4;
-      flex: 1;
-    }
-    .tile .tile-prob {
-      font-size: 26px;
-      font-weight: 600;
-      font-family: var(--font-mono);
-      margin-top: 10px;
-      line-height: 1;
-    }
-    .tile .tile-drift {
-      font-size: 10px;
-      font-family: var(--font-mono);
-      margin-top: 4px;
-      opacity: 0.6;
-    }
-    .tile .tile-hint {
-      font-size: 9px;
-      font-family: var(--font-mono);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      opacity: 0;
-      transition: opacity 0.15s;
-      margin-top: 6px;
-      color: inherit;
-    }
+    .tile .tile-tag { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--font-mono); opacity: 0.55; margin-bottom: 6px; }
+    .tile .tile-label { font-size: 12px; font-weight: 500; line-height: 1.4; flex: 1; }
+    .tile .tile-prob { font-size: 26px; font-weight: 600; font-family: var(--font-mono); margin-top: 10px; line-height: 1; }
+    .tile .tile-drift { font-size: 10px; font-family: var(--font-mono); margin-top: 4px; opacity: 0.6; }
+    .tile .tile-hint { font-size: 9px; font-family: var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; opacity: 0; transition: opacity 0.15s; margin-top: 6px; }
     .tile:hover .tile-hint { opacity: 0.5; }
-    .delete-btn {
-      position: absolute;
-      top: 8px; right: 10px;
-      background: none;
-      border: none;
-      font-size: 13px;
-      cursor: pointer;
-      opacity: 0;
-      transition: opacity 0.15s;
-      color: inherit;
-      line-height: 1;
-      padding: 2px 4px;
-    }
+    .delete-btn { position: absolute; top: 8px; right: 10px; background: none; border: none; font-size: 13px; cursor: pointer; opacity: 0; transition: opacity 0.15s; color: inherit; line-height: 1; padding: 2px 4px; }
     .tile:hover .delete-btn { opacity: 0.35; }
-    .delete-btn:hover { opacity: 0.8 !important; }
-
-    /* tile color tiers */
-    .tier-vh { background: var(--green-vh); border-color: var(--green-vh-border); color: var(--green-vh-text); }
-    .tier-h  { background: var(--green-h);  border-color: var(--green-h-border);  color: var(--green-h-text); }
-    .tier-m  { background: var(--surface);  border-color: var(--border);          color: var(--text); }
-    .tier-l  { background: var(--red-l);    border-color: var(--red-l-border);    color: var(--red-l-text); }
-    .tier-vl { background: var(--red-vl);   border-color: var(--red-vl-border);   color: var(--red-vl-text); }
+    .delete-btn:hover { opacity: 0.9 !important; }
+    .tier-vh { background: var(--green-vh);  border-color: var(--green-vh-border); color: var(--green-vh-text); }
+    .tier-h  { background: var(--green-h);   border-color: var(--green-h-border);  color: var(--green-h-text); }
+    .tier-m  { background: var(--surface);   border-color: var(--border);          color: var(--text); }
+    .tier-l  { background: var(--red-l);     border-color: var(--red-l-border);    color: var(--red-l-text); }
+    .tier-vl { background: var(--red-vl);    border-color: var(--red-vl-border);   color: var(--red-vl-text); }
 
     /* ── BRANCH PANEL ── */
-    .branch-panel {
-      background: var(--surface);
-      border: 0.5px solid var(--border);
-      border-radius: 10px;
-      padding: 22px;
-      margin-bottom: 32px;
-      animation: slideIn 0.18s ease;
-    }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .branch-heading {
-      font-size: 11px;
-      font-family: var(--font-mono);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-    .branch-event-name {
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--text);
-      margin-bottom: 18px;
-    }
-    .branch-event-name .prob-badge {
-      font-family: var(--font-mono);
-      font-size: 13px;
-      color: var(--accent);
-      margin-left: 8px;
-      opacity: 0.7;
-    }
-    .branch-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-      gap: 10px;
-    }
-    .branch-card {
-      background: var(--surface2);
-      border: 0.5px solid var(--border);
-      border-radius: 8px;
-      padding: 14px;
-      cursor: pointer;
-      transition: border-color 0.12s, transform 0.1s;
-    }
+    .branch-panel { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: 22px; margin-bottom: 28px; animation: slideIn 0.18s ease; }
+    @keyframes slideIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+    .branch-heading { font-size: 11px; font-family: var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+    .branch-event-name { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+    .branch-event-name .prob-badge { font-family: var(--font-mono); font-size: 13px; color: var(--accent); margin-left: 8px; opacity: 0.7; }
+    #sim-status { font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 14px; min-height: 16px; }
+    .branch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+    .branch-card { background: var(--surface2); border: 0.5px solid var(--border); border-radius: 8px; padding: 14px; cursor: pointer; transition: border-color 0.12s, transform 0.1s; animation: slideIn 0.18s ease both; }
     .branch-card:hover { border-color: var(--border-hover); transform: translateY(-1px); }
-    .branch-card .bc-scenario-label {
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-family: var(--font-mono);
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-    .branch-card .bc-text {
-      font-size: 12px;
-      line-height: 1.4;
-      color: var(--text);
-      margin-bottom: 10px;
-    }
-    .branch-card .bc-prob {
-      font-size: 22px;
-      font-weight: 600;
-      font-family: var(--font-mono);
-      line-height: 1;
-    }
-    .branch-card .bc-samples {
-      font-size: 10px;
-      font-family: var(--font-mono);
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-    .branch-card .sim-bar {
-      height: 3px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 2px;
-      margin-top: 10px;
-      overflow: hidden;
-    }
-    .branch-card .sim-fill {
-      height: 100%;
-      border-radius: 2px;
-      transition: width 0.5s ease;
-    }
+    .bc-scenario-label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px; }
+    .bc-text { font-size: 12px; line-height: 1.4; color: var(--text); margin-bottom: 10px; }
+    .bc-prob { font-size: 22px; font-weight: 600; font-family: var(--font-mono); line-height: 1; }
+    .bc-samples { font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); margin-top: 4px; }
     .branch-card.high .bc-prob { color: var(--green-h-text); }
-    .branch-card.high .sim-fill { background: #2d8a52; }
     .branch-card.low  .bc-prob { color: var(--red-l-text); }
-    .branch-card.low  .sim-fill { background: #8a2d2d; }
     .branch-card.mid  .bc-prob { color: var(--text-muted); }
+    .sim-bar { height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; margin-top: 10px; overflow: hidden; }
+    .sim-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
+    .branch-card.high .sim-fill { background: #2d8a52; }
+    .branch-card.low  .sim-fill { background: #8a2d2d; }
     .branch-card.mid  .sim-fill { background: #444; }
-
-    .branch-footer {
-      margin-top: 14px;
-      font-size: 10px;
-      font-family: var(--font-mono);
-      color: var(--text-dim);
-      letter-spacing: 0.05em;
-    }
+    .branch-footer { margin-top: 14px; font-size: 10px; font-family: var(--font-mono); color: var(--text-dim); }
 
     /* ── EMPTY STATE ── */
-    .empty-state {
-      grid-column: 1 / -1;
-      padding: 48px 24px;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 13px;
-    }
-    .empty-state .big {
-      font-size: 16px;
-      font-weight: 500;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
+    .empty-state { grid-column: 1/-1; padding: 48px 24px; text-align: center; color: var(--text-muted); font-size: 13px; }
+    .empty-state .big { font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
 
-    /* ── SCROLLBAR ── */
+    /* ── PARSING OVERLAY ── */
+    .parsing-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 200; }
+    .parsing-box { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: 32px; text-align: center; max-width: 320px; }
+    .parsing-box .pb-title { font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+    .parsing-box .pb-sub { font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); }
+    .spinner { width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 16px auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 2px; }
@@ -419,77 +187,134 @@
 </head>
 <body>
 
+<!-- TOPBAR -->
 <div class="topbar">
-  <div>
-    <div class="logo">Matrix</div>
-    <div class="logo-sub">Probability Intelligence Engine</div>
+  <div class="logo-wrap">
+    <!-- SVG Logo based on uploaded design: three nodes in triangle with directional arrows -->
+    <svg class="logo-svg" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ng1" cx="38%" cy="32%"><stop offset="0%" stop-color="#00e070"/><stop offset="100%" stop-color="#7a2010"/></radialGradient>
+        <marker id="marr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#c84040" stroke-width="1.8" stroke-linecap="round"/>
+        </marker>
+      </defs>
+      <!-- edges (neutral) -->
+      <line x1="32" y1="20" x2="14" y2="47" stroke="#383838" stroke-width="1"/>
+      <line x1="32" y1="20" x2="50" y2="47" stroke="#383838" stroke-width="1"/>
+      <line x1="14" y1="47" x2="50" y2="47" stroke="#383838" stroke-width="1"/>
+      <!-- directional arrows (red) -->
+      <line x1="15" y1="44" x2="30" y2="22" stroke="#c84040" stroke-width="1.4" marker-end="url(#marr)"/>
+      <line x1="49" y1="44" x2="34" y2="22" stroke="#c84040" stroke-width="1.4" marker-end="url(#marr)"/>
+      <line x1="20" y1="47" x2="44" y2="47" stroke="#c84040" stroke-width="1.4" marker-end="url(#marr)"/>
+      <!-- node circles -->
+      <circle cx="32" cy="16" r="8" fill="none" stroke="#555" stroke-width="1.2"/>
+      <circle cx="32" cy="16" r="5.5" fill="url(#ng1)"/>
+      <circle cx="12" cy="50" r="8" fill="none" stroke="#555" stroke-width="1.2"/>
+      <circle cx="12" cy="50" r="5.5" fill="url(#ng1)"/>
+      <circle cx="52" cy="50" r="8" fill="none" stroke="#555" stroke-width="1.2"/>
+      <circle cx="52" cy="50" r="5.5" fill="url(#ng1)"/>
+    </svg>
+    <div>
+      <div class="logo">Matrix</div>
+      <div class="logo-sub">Probability Intelligence Engine</div>
+    </div>
   </div>
-  <div class="topbar-right" id="event-count">
-    <span id="count-num">0</span> events · click any tile to branch
-  </div>
+  <div class="topbar-right"><span id="count-num">0</span> events · click any tile to branch</div>
 </div>
 
 <div class="main">
 
-  <!-- BREADCRUMB -->
   <div id="breadcrumb"></div>
 
-  <!-- ADD FORM -->
-  <div class="form-row">
-    <input id="event-input" type="text" placeholder="Describe a decision or event…" autocomplete="off" />
-    <input id="prob-input" type="number" min="1" max="99" placeholder="%" />
-    <button class="add-btn" onclick="addEvent()">+ Add</button>
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('manual')" id="tab-manual">manual input</div>
+    <div class="tab" onclick="switchTab('article')" id="tab-article">parse article</div>
+    <div class="tab" onclick="switchTab('polymarket')" id="tab-pm">polymarket signals</div>
   </div>
 
-  <!-- POLYMARKET STRIP -->
-  <div class="pm-strip">
-    <div class="pm-header">
-      <span class="pm-label">Polymarket signals</span>
-      <button class="pm-fetch-btn" onclick="loadPolymarket()">fetch live →</button>
+  <!-- MANUAL TAB -->
+  <div id="panel-manual">
+    <div class="form-row">
+      <input id="event-input" type="text" placeholder="Describe a decision or event…" autocomplete="off" />
+      <input id="prob-input" type="text" inputmode="numeric" placeholder="% (optional)" />
+      <button class="add-btn" onclick="addEvent()">+ Add</button>
     </div>
-    <div id="pm-chips" class="pm-chips">
-      <span class="pm-hint">Click "fetch live" to pull real prediction market probabilities and import them as tiles</span>
+  </div>
+
+  <!-- ARTICLE TAB -->
+  <div id="panel-article" style="display:none;">
+    <div class="article-panel">
+      <div class="form-row" style="margin-bottom:10px;">
+        <textarea id="article-input" placeholder="Paste any article, research note, or scenario text here… Matrix will extract the key scenarios and assign probabilities automatically.&#10;&#10;Try the Citrini Research 2028 Global Intelligence Crisis scenario, a news article, or any strategic memo."></textarea>
+      </div>
+      <div class="article-actions">
+        <button class="add-btn" onclick="parseArticle()">Extract scenarios →</button>
+        <button class="sec-btn" onclick="loadCitriniDemo()">Load Citrini 2028 demo</button>
+        <span class="parse-hint" id="parse-hint"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- POLYMARKET TAB -->
+  <div id="panel-pm" style="display:none;">
+    <div class="pm-strip" style="margin-bottom:0;">
+      <div class="pm-header">
+        <span class="pm-label">Prediction market signals</span>
+        <button class="pm-fetch-btn" onclick="loadPolymarket()">fetch live →</button>
+      </div>
+      <div id="pm-chips" class="pm-chips">
+        <span class="pm-hint">Click "fetch live" to pull real prediction market probabilities</span>
+      </div>
     </div>
   </div>
 
   <!-- LEGEND -->
-  <div class="legend">
+  <div class="legend" style="margin-top:20px;">
     <span>probability</span>
     <div class="legend-item"><div class="legend-dot" style="background:#1a6e40"></div><span>&gt; 75%</span></div>
-    <div class="legend-item"><div class="legend-dot" style="background:#1a5234"></div><span>55 – 75%</span></div>
-    <div class="legend-item"><div class="legend-dot" style="background:#333"></div><span>40 – 55%</span></div>
-    <div class="legend-item"><div class="legend-dot" style="background:#6e1a1a"></div><span>25 – 40%</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1a5234"></div><span>55–75%</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#333"></div><span>40–55%</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#6e1a1a"></div><span>25–40%</span></div>
     <div class="legend-item"><div class="legend-dot" style="background:#521414"></div><span>&lt; 25%</span></div>
-    <span style="margin-left:4px">· click any tile to explore branches</span>
+    <span style="margin-left:4px;">· click any tile to explore branches</span>
   </div>
 
-  <!-- HEATMAP -->
   <div id="heatmap" class="heatmap"></div>
-
-  <!-- BRANCH PANEL -->
   <div id="branch-panel"></div>
-
 </div>
 
 <script>
-// ── STATE ──────────────────────────────────────────
+// ─────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────
 const SEED = [
-  { id: 's1', label: 'Close Q2 enterprise deal', prob: 72, source: 'human' },
-  { id: 's2', label: 'Hire lead engineer by June', prob: 41, source: 'human' },
-  { id: 's3', label: 'Raise pre-seed round this year', prob: 28, source: 'human' },
-  { id: 's4', label: 'Product reaches 10 active clients', prob: 58, source: 'human' },
+  { id: 's1', label: 'S&P 500 drawdown exceeds 38% from Oct 2026 highs', prob: 34, source: 'citrini' },
+  { id: 's2', label: 'White-collar unemployment triggers consumer recession', prob: 58, source: 'citrini' },
+  { id: 's3', label: 'Private credit software defaults cascade systemically', prob: 29, source: 'citrini' },
+  { id: 's4', label: 'AI displaces majority of white-collar jobs by 2028', prob: 45, source: 'citrini' },
 ];
 
-let events = JSON.parse(localStorage.getItem('matrix_events') || 'null') || [...SEED];
+let events = JSON.parse(localStorage.getItem('matrix_v2_events') || 'null') || [...SEED];
 let navStack = [];
 let currentBranchNode = null;
 let scenarioCache = {};
 
-function save() {
-  localStorage.setItem('matrix_events', JSON.stringify(events));
+function save() { localStorage.setItem('matrix_v2_events', JSON.stringify(events)); }
+
+// ─────────────────────────────────────────────────────
+// TABS
+// ─────────────────────────────────────────────────────
+function switchTab(name) {
+  ['manual','article','pm'].forEach(t => {
+    document.getElementById('panel-' + (t === 'pm' ? 'pm' : t)).style.display = t === name ? 'block' : 'none';
+    document.getElementById('tab-' + (t === 'pm' ? 'pm' : t)).classList.toggle('active', t === name);
+  });
 }
 
-// ── UTILITIES ──────────────────────────────────────
+// ─────────────────────────────────────────────────────
+// UTILITIES
+// ─────────────────────────────────────────────────────
 function tier(p) {
   if (p > 75) return 'vh';
   if (p > 55) return 'h';
@@ -499,123 +324,124 @@ function tier(p) {
 }
 
 function seededRand(seed) {
-  let s = seed;
-  return function() {
-    s = (s * 1664525 + 1013904223) & 0xffffffff;
-    return (s >>> 0) / 0xffffffff;
+  let s = seed >>> 0;
+  return () => {
+    s = (Math.imul(1664525, s) + 1013904223) >>> 0;
+    return s / 0xffffffff;
   };
 }
 
-function drift(id, p) {
-  const r = seededRand(id.charCodeAt(0) * 31 + p);
-  return ((p - 50) / 50 * 12 + (r() - 0.5) * 6).toFixed(1);
+function driftVal(id, p) {
+  const seed = id.split('').reduce((a, c) => a + c.charCodeAt(0), 0) + p * 7;
+  const r = seededRand(seed);
+  return parseFloat(((p - 50) / 50 * 12 + (r() - 0.5) * 6).toFixed(1));
 }
 
-function shortenLabel(l, n) {
-  return l.length > n ? l.slice(0, n - 2) + '…' : l;
-}
+function shorten(l, n) { return l.length > n ? l.slice(0, n - 2) + '…' : l; }
 
-// ── NAVIGATION ─────────────────────────────────────
+// ─────────────────────────────────────────────────────
+// NAV / BREADCRUMB
+// ─────────────────────────────────────────────────────
 function resetNav() {
-  navStack = [];
-  currentBranchNode = null;
-  renderBreadcrumb();
-  renderBranch();
+  navStack = []; currentBranchNode = null; scenarioCache = {};
+  renderBreadcrumb(); renderBranch();
 }
 
 function navTo(idx) {
   navStack = navStack.slice(0, idx + 1);
   currentBranchNode = navStack[navStack.length - 1];
-  renderBreadcrumb();
-  renderBranch();
+  scenarioCache = {};
+  renderBreadcrumb(); renderBranch();
 }
 
 function renderBreadcrumb() {
   const el = document.getElementById('breadcrumb');
-  if (navStack.length === 0) { el.innerHTML = ''; return; }
+  if (!navStack.length) { el.innerHTML = ''; return; }
   let parts = [`<span class="bc-link" onclick="resetNav()">root</span>`];
   navStack.forEach((n, i) => {
     parts.push(`<span class="bc-sep">›</span>`);
-    const lbl = shortenLabel(n.label, 28);
-    if (i < navStack.length - 1) {
+    const lbl = shorten(n.label, 30);
+    if (i < navStack.length - 1)
       parts.push(`<span class="bc-link" onclick="navTo(${i})">${lbl}</span>`);
-    } else {
+    else
       parts.push(`<span class="bc-current">${lbl}</span>`);
-    }
   });
   el.innerHTML = parts.join('');
 }
 
-// ── SCENARIOS ──────────────────────────────────────
+// ─────────────────────────────────────────────────────
+// SCENARIO GENERATION — uses real node label
+// ─────────────────────────────────────────────────────
 function generateScenarios(node) {
   const p = node.prob;
-  const templates = [
-    { verb: 'succeeds fully',           factor: 1.28, offsetBase: 15 },
-    { verb: 'succeeds partially',        factor: 1.10, offsetBase: 8 },
-    { verb: 'fails — recovers next quarter', factor: 0.82, offsetBase: -8 },
-    { verb: 'fails entirely',            factor: 0.60, offsetBase: -20 },
-    { verb: 'is delayed significantly',  factor: 0.90, offsetBase: -6 },
-    { verb: 'unlocks a new opportunity', factor: 1.15, offsetBase: 10 },
+  const lbl = shorten(node.label, 34);
+  // outcomes derived from the actual event label
+  const outcomes = [
+    { suffix: 'occurs as described',         factor: 1.05, delta:  4 },
+    { suffix: 'occurs with greater severity', factor: 1.22, delta: 12 },
+    { suffix: 'occurs in a milder form',      factor: 0.88, delta: -6 },
+    { suffix: 'is averted by policy response',factor: 0.55, delta:-18 },
+    { suffix: 'triggers a second-order shock',factor: 1.18, delta:  9 },
+    { suffix: 'resolves faster than expected',factor: 0.72, delta:-10 },
   ];
-  const r = seededRand(node.id.split('').reduce((a, c) => a + c.charCodeAt(0), 0) + p * 7);
-  return templates.map((t, i) => {
-    const raw = Math.round(p * t.factor + t.offsetBase * 0.4 + (r() - 0.5) * 10);
-    const prob = Math.min(97, Math.max(3, raw));
+  const r = seededRand(node.id.split('').reduce((a,c) => a + c.charCodeAt(0), 0) + p * 11);
+  return outcomes.map((o, i) => {
+    const raw = Math.round(p * o.factor + o.delta * 0.5 + (r() - 0.5) * 10);
     return {
-      id: node.id + '_sc' + i,
-      label: `"${shortenLabel(node.label, 30)}" ${t.verb}`,
-      prob,
+      id: node.id + '_sc' + i + '_' + p,
+      label: `${lbl} — ${o.suffix}`,
+      prob: Math.min(97, Math.max(3, raw)),
       source: 'scenario',
     };
   });
 }
 
-// ── RENDER HEATMAP ──────────────────────────────────
+// ─────────────────────────────────────────────────────
+// RENDER HEATMAP
+// ─────────────────────────────────────────────────────
 function renderHeatmap() {
   const hm = document.getElementById('heatmap');
   document.getElementById('count-num').textContent = events.length;
-
-  if (events.length === 0) {
-    hm.innerHTML = `<div class="empty-state"><div class="big">No events yet</div>Add a decision above to start mapping your probability space</div>`;
+  if (!events.length) {
+    hm.innerHTML = `<div class="empty-state"><div class="big">No events yet</div>Add a decision above or paste an article to extract scenarios</div>`;
     return;
   }
-
   hm.innerHTML = events.map(ev => {
     const t = tier(ev.prob);
-    const d = parseFloat(drift(ev.id, ev.prob));
+    const d = driftVal(ev.id, ev.prob);
     const dStr = d > 0 ? `↑ +${d}` : `↓ ${d}`;
-    const srcLabel = ev.source === 'polymarket' ? 'polymarket' : ev.source === 'scenario' ? 'scenario' : 'human';
-    return `
-      <div class="tile tier-${t}" onclick="openBranch('${ev.id}')">
-        <button class="delete-btn" onclick="event.stopPropagation();deleteEvent('${ev.id}')">✕</button>
-        <div>
-          <div class="tile-tag">${srcLabel}</div>
-          <div class="tile-label">${ev.label}</div>
-        </div>
-        <div>
-          <div class="tile-prob">${ev.prob}%</div>
-          <div class="tile-drift">${dStr}% drift</div>
-          <div class="tile-hint">tap to branch →</div>
-        </div>
-      </div>`;
+    const srcLabel = ev.source === 'polymarket' ? 'polymarket' : ev.source === 'citrini' ? 'citrini demo' : ev.source === 'article' ? 'article' : ev.source === 'scenario' ? 'scenario' : 'human';
+    return `<div class="tile tier-${t}" onclick="openBranch('${ev.id}')">
+      <button class="delete-btn" onclick="event.stopPropagation();deleteEvent('${ev.id}')">✕</button>
+      <div>
+        <div class="tile-tag">${srcLabel}</div>
+        <div class="tile-label">${ev.label}</div>
+      </div>
+      <div>
+        <div class="tile-prob">${ev.prob}%</div>
+        <div class="tile-drift">${dStr}% drift</div>
+        <div class="tile-hint">tap to branch →</div>
+      </div>
+    </div>`;
   }).join('');
 }
 
 function deleteEvent(id) {
   events = events.filter(e => e.id !== id);
   if (currentBranchNode && currentBranchNode.id === id) resetNav();
-  save();
-  renderHeatmap();
+  save(); renderHeatmap();
 }
 
-// ── RENDER BRANCH PANEL ─────────────────────────────
+// ─────────────────────────────────────────────────────
+// BRANCH PANEL — stores scenarios in cache, refs by id
+// ─────────────────────────────────────────────────────
 function openBranch(id) {
   const node = events.find(e => e.id === id);
   if (!node) return;
   navStack.push(node);
   currentBranchNode = node;
-  renderBreadcrumb();
-  renderBranch();
+  scenarioCache = {};
+  renderBreadcrumb(); renderBranch();
   setTimeout(() => document.getElementById('branch-panel').scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
 }
 
@@ -625,146 +451,212 @@ function renderBranch() {
 
   const node = currentBranchNode;
   const scenarios = generateScenarios(node);
-  const r = seededRand(node.prob * 13);
-
-  // Store in cache so drillInto can look up by ID — no serialisation into HTML
   scenarioCache = {};
   scenarios.forEach(sc => { scenarioCache[sc.id] = sc; });
 
-  // Show simulation running state first, then reveal cards
+  const r = seededRand(node.prob * 17);
+
   panel.innerHTML = `
     <div class="branch-panel">
       <div class="branch-heading">branching from</div>
-      <div class="branch-event-name">
-        ${shortenLabel(node.label, 60)}
-        <span class="prob-badge">${node.prob}%</span>
-      </div>
+      <div class="branch-event-name">${shorten(node.label, 60)}<span class="prob-badge">${node.prob}%</span></div>
       <div id="sim-status" style="font-size:11px;font-family:var(--font-mono);color:var(--text-muted);margin-bottom:14px;min-height:16px;"></div>
       <div id="branch-grid-inner" class="branch-grid"></div>
       <div class="branch-footer">click any scenario to explore deeper · depth: ${navStack.length}</div>
     </div>`;
 
-  // Animate simulation progress, then render cards
   const statusEl = document.getElementById('sim-status');
-  const gridEl = document.getElementById('branch-grid-inner');
-  const steps = [
-    'initialising markov chain…',
-    'sampling state transitions…',
-    'running monte carlo simulation…',
-    'converging on probability estimates…',
-    'scenarios ready',
-  ];
+  const gridEl   = document.getElementById('branch-grid-inner');
+
+  const steps = ['initialising markov chain…','sampling state transitions…','running monte carlo simulation…','converging on estimates…','scenarios ready'];
   let i = 0;
-  const interval = setInterval(() => {
-    if (statusEl) statusEl.textContent = steps[i] || steps[steps.length - 1];
+  const iv = setInterval(() => {
+    if (statusEl) statusEl.textContent = steps[Math.min(i, steps.length - 1)];
     i++;
     if (i >= steps.length) {
-      clearInterval(interval);
-      // Render cards after simulation "completes"
+      clearInterval(iv);
       if (!gridEl) return;
-      gridEl.innerHTML = scenarios.map(sc => {
+      gridEl.innerHTML = scenarios.map((sc, idx) => {
         const cls = sc.prob > 55 ? 'high' : sc.prob < 40 ? 'low' : 'mid';
         const samples = (1000 + Math.floor(r() * 8000)).toLocaleString();
-        return `
-          <div class="branch-card ${cls}" onclick="drillInto('${sc.id}')" style="animation: slideIn 0.18s ease both">
-            <div class="bc-scenario-label">scenario</div>
-            <div class="bc-text">${sc.label}</div>
-            <div class="bc-prob">${sc.prob}%</div>
-            <div class="bc-samples">~${samples} MCMC samples</div>
-            <div class="sim-bar"><div class="sim-fill" style="width:0%;" data-target="${sc.prob}"></div></div>
-          </div>`;
+        return `<div class="branch-card ${cls}" onclick="drillInto('${sc.id}')" style="animation-delay:${idx * 40}ms">
+          <div class="bc-scenario-label">scenario</div>
+          <div class="bc-text">${sc.label}</div>
+          <div class="bc-prob">${sc.prob}%</div>
+          <div class="bc-samples">~${samples} MCMC samples</div>
+          <div class="sim-bar"><div class="sim-fill" style="width:0%" data-target="${sc.prob}"></div></div>
+        </div>`;
       }).join('');
-
-      // Animate sim bars filling up
       setTimeout(() => {
         document.querySelectorAll('.sim-fill[data-target]').forEach(el => {
-          el.style.transition = 'width 0.6s ease';
           el.style.width = el.dataset.target + '%';
         });
         if (statusEl) statusEl.textContent = `${scenarios.length} scenarios · depth ${navStack.length}`;
       }, 60);
     }
-  }, 320);
+  }, 280);
 }
 
 function drillInto(scId) {
   const sc = scenarioCache[scId];
   if (!sc) return;
-  const node = { ...sc, id: scId + '_' + Date.now() };
+  const node = { ...sc, id: scId + '_d' + Date.now() };
   navStack.push(node);
   currentBranchNode = node;
-  scenarioCache = {}; // clear — new scenarios will be generated
-  renderBreadcrumb();
-  renderBranch();
+  scenarioCache = {};
+  renderBreadcrumb(); renderBranch();
   setTimeout(() => document.getElementById('branch-panel').scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
 }
 
-// ── ADD EVENT ───────────────────────────────────────
+// ─────────────────────────────────────────────────────
+// ADD EVENT — fixed: % field is truly optional
+// ─────────────────────────────────────────────────────
 function addEvent() {
   const labelEl = document.getElementById('event-input');
-  const probEl = document.getElementById('prob-input');
-  const label = labelEl.value.trim();
-  const prob = parseInt(probEl.value);
+  const probEl  = document.getElementById('prob-input');
+  const label   = labelEl.value.trim();
 
-  if (!label || isNaN(prob) || prob < 1 || prob > 99) {
-    labelEl.style.borderColor = 'rgba(255,80,80,0.5)';
-    setTimeout(() => labelEl.style.borderColor = '', 1200);
+  if (!label) {
+    labelEl.style.borderColor = 'rgba(255,80,80,0.7)';
+    labelEl.placeholder = 'please describe the event first…';
+    setTimeout(() => { labelEl.style.borderColor = ''; labelEl.placeholder = 'Describe a decision or event…'; }, 1800);
+    labelEl.focus();
+    return;
+  }
+
+  // parse prob — empty defaults to 50, anything non-numeric or out of range gets flagged
+  const raw = probEl.value.replace(/[^0-9]/g, '').trim();
+  let prob = raw === '' ? 50 : parseInt(raw, 10);
+
+  if (isNaN(prob) || prob < 1 || prob > 99) {
+    probEl.style.borderColor = 'rgba(255,80,80,0.7)';
+    probEl.placeholder = '1–99';
+    setTimeout(() => { probEl.style.borderColor = ''; probEl.placeholder = '% (optional)'; }, 1800);
+    probEl.focus();
     return;
   }
 
   events.push({ id: 'u' + Date.now(), label, prob, source: 'human' });
-  labelEl.value = '';
-  probEl.value = '';
+  labelEl.value = ''; probEl.value = '';
   labelEl.focus();
-  save();
-  renderHeatmap();
+  save(); renderHeatmap();
 }
 
-document.getElementById('event-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') addEvent();
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('event-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addEvent();
+  });
 });
 
-// ── POLYMARKET ──────────────────────────────────────
-// In production, swap this mock with a real proxy endpoint:
-// GET /api/polymarket → fetches https://gamma-api.polymarket.com/markets and returns sanitised JSON
+// ─────────────────────────────────────────────────────
+// ARTICLE PARSER — uses Claude API
+// ─────────────────────────────────────────────────────
+async function parseArticle() {
+  const text = document.getElementById('article-input').value.trim();
+  if (!text) {
+    document.getElementById('parse-hint').textContent = 'paste some text first';
+    return;
+  }
+
+  // Show parsing overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'parsing-overlay';
+  overlay.innerHTML = `<div class="parsing-box">
+    <div class="pb-title">Extracting scenarios</div>
+    <div class="spinner"></div>
+    <div class="pb-sub" id="parse-status">reading article…</div>
+  </div>`;
+  document.body.appendChild(overlay);
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `You are a probability analyst. Extract 4-8 distinct scenarios or events from the provided text. For each, assign a probability (1-99) reflecting how likely it is based on the framing in the text. Respond ONLY with a JSON array, no markdown, no explanation. Format: [{"label":"concise scenario description max 60 chars","prob":45},...]`,
+        messages: [{ role: 'user', content: text.slice(0, 8000) }]
+      })
+    });
+
+    const data = await res.json();
+    const raw = data.content?.find(b => b.type === 'text')?.text || '[]';
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+
+    document.body.removeChild(overlay);
+
+    if (!parsed.length) {
+      document.getElementById('parse-hint').textContent = 'no scenarios found — try more text';
+      return;
+    }
+
+    parsed.forEach(sc => {
+      events.push({
+        id: 'art' + Date.now() + Math.random().toString(36).slice(2, 6),
+        label: sc.label,
+        prob: Math.min(97, Math.max(3, parseInt(sc.prob) || 50)),
+        source: 'article',
+      });
+    });
+
+    save(); renderHeatmap();
+    document.getElementById('parse-hint').textContent = `✓ extracted ${parsed.length} scenarios`;
+    switchTab('manual');
+
+  } catch (err) {
+    document.body.removeChild(overlay);
+    document.getElementById('parse-hint').textContent = 'error — check console';
+    console.error(err);
+  }
+}
+
+function loadCitriniDemo() {
+  document.getElementById('article-input').value = `THE 2028 GLOBAL INTELLIGENCE CRISIS — Citrini Research scenario (Feb 2026)
+
+The unemployment rate printed 10.2%, S&P down 38% from October 2026 highs. AI-driven white-collar displacement created a "human intelligence displacement spiral": companies cut headcount, reinvested savings into AI, which enabled further cuts. Ghost GDP emerged — output that never circulated through households. Consumer spending collapsed as top earners were displaced. Private credit software LBOs (Zendesk, SaaS) began defaulting as AI disrupted recurring revenue assumptions. Prime mortgage delinquencies rose in SF, Seattle, Austin. Insurance companies holding PE-backed software debt faced regulatory capital calls. The government faces structural deficit as income/payroll tax receipts fall 12% below projections. Policy proposals include "Transition Economy Act" and "Shared AI Prosperity Act" but political gridlock persists.`;
+  document.getElementById('parse-hint').textContent = 'demo loaded — click "Extract scenarios →"';
+}
+
+// ─────────────────────────────────────────────────────
+// POLYMARKET (mocked — swap for real proxy in prod)
+// ─────────────────────────────────────────────────────
 const POLY_MOCK = [
   { question: 'Fed rate cut before July 2025?', price: 0.64 },
   { question: 'BTC above $80k end of 2025?', price: 0.41 },
   { question: 'US recession in 2025?', price: 0.29 },
-  { question: 'GPT-5 released before Q3?', price: 0.55 },
-  { question: 'Kenya GDP growth >5% this year?', price: 0.38 },
   { question: 'AI regulation bill passes in 2025?', price: 0.22 },
   { question: 'EUR/USD above 1.10 by Dec 2025?', price: 0.47 },
+  { question: 'S&P 500 below 4000 in 2026?', price: 0.18 },
+  { question: 'White-collar unemployment > 8% in 2027?', price: 0.31 },
 ];
 
 async function loadPolymarket() {
-  const container = document.getElementById('pm-chips');
-  container.innerHTML = '<span class="pm-hint">fetching…</span>';
-
-  // Simulated network delay (replace with real fetch in production)
+  const c = document.getElementById('pm-chips');
+  c.innerHTML = '<span class="pm-hint">fetching…</span>';
   await new Promise(r => setTimeout(r, 800));
-
-  const data = POLY_MOCK;
-
-  container.innerHTML = data.map(m => {
+  c.innerHTML = POLY_MOCK.map(m => {
     const p = Math.round(m.price * 100);
-    const color = p > 55 ? '#2d8a52' : p < 40 ? '#8a2d2d' : '#5a5a50';
+    const col = p > 55 ? '#2d8a52' : p < 40 ? '#8a2d2d' : '#5a5a50';
     const q = m.question.replace(/'/g, "\\'");
-    return `<div class="pm-chip" onclick="importPolymarket('${q}', ${p})">
-      <div class="pm-dot" style="background:${color}"></div>
-      ${shortenLabel(m.question, 32)} · <strong>${p}%</strong>
+    return `<div class="pm-chip" onclick="importPolymarket('${q}',${p})">
+      <div class="pm-dot" style="background:${col}"></div>
+      ${shorten(m.question, 32)} · <strong>${p}%</strong>
     </div>`;
   }).join('');
 }
 
-function importPolymarket(question, prob) {
-  if (events.some(e => e.label === question)) return;
-  events.push({ id: 'pm' + Date.now(), label: question, prob, source: 'polymarket' });
-  save();
-  renderHeatmap();
+function importPolymarket(q, p) {
+  if (events.some(e => e.label === q)) return;
+  events.push({ id: 'pm' + Date.now(), label: q, prob: p, source: 'polymarket' });
+  save(); renderHeatmap();
+  switchTab('manual');
 }
 
-// ── INIT ────────────────────────────────────────────
+// ─────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────
 renderHeatmap();
 </script>
 </body>
